@@ -1,25 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+//rfce
+
+import React from 'react';
+import { WeatherProvider } from "./contexts/WeatherContext";
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import WeatherCard from "./components/WeatherCard/WeatherCard";
+import CityInput from "./components/CityInput/CityInput";
+
+
+
 
 function App() {
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+
+    <WeatherProvider>
+
+      <Router>
+
+        <div className="app">
+          
+          <Routes>
+            
+            <Route path="/" element={<CityInput />} />
+
+            <Route path="/results" element={<WeatherCard />} />
+
+          </Routes>
+
+        </div>
+
+      </Router>
+
+    </WeatherProvider>
   );
 }
 
-export default App;
+export default App

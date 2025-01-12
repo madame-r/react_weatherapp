@@ -1,12 +1,11 @@
-require('dotenv').config()
+require('dotenv').config();
 
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const fs = require("fs");
 const mysql2 = require("mysql2");
-
-
+const axios = require("axios");
 
 const app = express();
 app.use(cors());
@@ -20,47 +19,33 @@ const connection = mysql2.createConnection({
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
-  port:process.env.DB_PORT,
+  port: process.env.DB_PORT,
 });
-
-
 
 // Vérification de la connexion
 connection.connect((err) => {
   if (err) {
-    console.error("Erreur de connexion à la base de données MySQL : ", err.stack);
+    console.error("MySQL database connection error: ", err.stack);
     return;
   }
-  console.log("Connecté à la base de données MySQL.");
+  console.log("Connected to MySQL database.");
 });
 
 
 
 
 
-// Fonction pour récupérer l'adresse IP d'une requête
-const getClientIp = (req) => {
-  const forwarded = req.headers["x-forwarded-for"];
-  const ip = forwarded ? forwarded.split(",")[0] : req.socket.remoteAddress;
-  return ip;
-};
-
-
-
-
- 
 
 // Fonction pour sauvegarder les données dans un fichier JSON
 const saveDataToFile = (filePath, newData) => {
-  // Lire les données existantes
   let existingData = [];
   if (fs.existsSync(filePath)) {
     try {
       const fileContent = fs.readFileSync(filePath, "utf8");
       existingData = JSON.parse(fileContent);
     } catch (error) {
-      console.error("Erreur lors de la lecture du fichier :", error);
-      throw new Error("Erreur lors de la lecture des données existantes.");
+      console.error("Error reading file:", error);
+      throw new Error("Error reading existing data.");
     }
   }
 
@@ -70,10 +55,10 @@ const saveDataToFile = (filePath, newData) => {
   // Sauvegarder dans le fichier JSON
   try {
     fs.writeFileSync(filePath, JSON.stringify(existingData, null, 2), "utf8");
-    console.log("Données sauvegardées avec succès dans :", filePath);
+    console.log("Data successfully saved in:", filePath);
   } catch (error) {
-    console.error("Erreur lors de l'enregistrement des données :", error);
-    throw new Error("Erreur lors de l'enregistrement des données.");
+    console.error("Error saving data:", error);
+    throw new Error("Error saving data.");
   }
 };
 
@@ -81,25 +66,31 @@ const saveDataToFile = (filePath, newData) => {
 
 
 
-
-
 // Fonction pour enregistrer les données dans MySQL
-const saveDataToDatabase = (apiWeatherData) => {
+const saveDataToDatabase = (weatherstackData) => {
   return new Promise((resolve, reject) => {
-    const { timestamp, location, temperature, condition, cloudCoverage, humidity, windSpeed, windDirection } = apiWeatherData;
+    const { name, country, localtime, temperature, weather_descriptions, weather_icons } = weatherstackData;
 
-    // Utilisation des variables directement dans la requête SQL
     const query = `
-      INSERT INTO api_weather_data (location, temperature, condition_weather, cloud_coverage, humidity, wind_speed, wind_direction, time_stamp)
-      VALUES ('${location}', ${temperature}, '${condition}', ${cloudCoverage}, ${humidity}, ${windSpeed}, '${windDirection}', '${timestamp}');
+      INSERT INTO weather_data (name, country, local_time, temperature, weather_descriptions, weather_icon)
+      VALUES (?, ?, ?, ?, ?, ?);
     `;
 
-    connection.execute(query, (err, results) => {
+    const values = [
+      name,
+      country,
+      localtime,
+      temperature,
+      weather_descriptions.join(", "),
+      weather_icons[0], // Première icône seulement
+    ];
+
+    connection.execute(query, values, (err, results) => {
       if (err) {
-        console.error("Erreur lors de l'insertion dans la base de données :", err);
+        console.error("Error when inserting into the database:", err);
         reject(err);
       } else {
-        console.log("Données enregistrées dans la base de données avec succès.");
+        console.log("Data saved to database successfully.");
         resolve(results);
       }
     });
@@ -110,112 +101,115 @@ const saveDataToDatabase = (apiWeatherData) => {
 
 
 
+/* WEATHER STACK START */
+app.get("/weatherstack", async (req, res) => {
+  const city = req.query.city;
 
-
-// Route POST pour les données météo
-app.post("/apiWeather", (req, res) => {
-  const { weatherData } = req.body;
-
-  if (!weatherData || !weatherData.location || !weatherData.current) {
-    return res.status(400).json({ error: "Données météo invalides." });
+  if (!city) {
+    return res.status(400).json({ error: "Please enter a city name." });
   }
 
-  // Extraire les informations supplémentaires
-  const apiWeatherData = {
-    timestamp: new Date().toISOString(),
-    location: weatherData.location.name,
-    temperature: weatherData.current.temp_c,
-    condition: weatherData.current.condition.text,
-    cloudCoverage: weatherData.current.cloud, // Couverture nuageuse
-    humidity: weatherData.current.humidity,  // Humidité
-    windSpeed: weatherData.current.wind_kph, // Vitesse du vent
-    windDirection: weatherData.current.wind_dir, // Direction du vent
-  };
-
-
- // Log de l'adresse IP
- const ipAddress = getClientIp(req);
- console.log(`Requête reçue de l'IP : ${ipAddress}`);
- 
-
-
-  // Sauvegarder dans le fichier JSON
   try {
-    saveDataToFile("./backend/apiWeatherData.json", apiWeatherData);
+    const response = await axios.get('http://api.weatherstack.com/current', {
+      params: {
+        access_key: process.env.WEATHERSTACK_API_KEY,
+        query: city
+      },
+    });
 
-    // Sauvegarder dans la base de données MySQL
-    saveDataToDatabase(apiWeatherData)
+    if (response.data.error) {
+      return res.status(400).json({ error: "Impossible to fetch weather data from this city." });
+    }
+
+    const { location, current } = response.data;
+
+    if (!location || !current) {
+      return res.status(400).json({ error: "Invalid response from Weatherstack API." });
+    }
+
+    const weatherstackData = {
+      name: location.name,
+      country: location.country,
+      localtime: location.localtime,
+      temperature: current.temperature,
+      weather_descriptions: current.weather_descriptions,
+      weather_icons: current.weather_icons,
+      timestamp: new Date().toISOString() // Le timestamp est ici
+    };
+
+    // Sauvegarder dans le fichier JSON et la base de données
+    saveDataToFile("./backend/weatherstackData.json", weatherstackData);
+
+    // Sauvegarder dans la base de données
+    saveDataToDatabase(weatherstackData)
       .then(() => {
-        res.json({ message: "Données météo sauvegardées.", data: apiWeatherData });
+        res.json({ message: "Weather data saved.", data: weatherstackData });
       })
       .catch((error) => {
-        res.status(500).json({ error: "Erreur lors de l'enregistrement dans la base de données." });
+        res.status(500).json({ error: "Error saving to database." });
       });
 
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Error fetching weather data:", error.message);
+    res.status(500).json({ error: "Unable to connect to the Weatherstack API. Please try again later." });
   }
 });
 
+/* WEATHER STACK END */
 
 
-// Route POST pour les données de géolocalisation
-app.post('/apiGeo', (req, res) => {
 
-  const { latitude, longitude } = req.body;  // Extraire directement latitude et longitude
+/* AUTOCOMPLETE START */
 
-  if (!latitude || !longitude) {  // Vérification si les coordonnées sont présentes
-    return res.status(400).json({ error: "Données de localisation invalides." });
+app.get("/weatherstack/autocomplete", async (req, res) => {
+
+  const city = req.query.city;
+
+  if (!city) {
+
+    return res.status(400).json({ error: "Please enter a city name" });
+
   }
 
-  const apiGeoData = {
-    timestamp: new Date().toISOString(), 
-    latitude: latitude,
-    longitude: longitude,
-  };
-
-  // Sauvegarder dans le fichier JSON
   try {
-    saveDataToFile("./backend/apiGeoData.json", apiGeoData);
-    res.json({ message: "Données de géolocalisation sauvegardées avec succès.", data: apiGeoData });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
 
-});
+    console.log("Received autocomplete request for city:", city);
 
+    const response = await axios.get("http://api.weatherstack.com/autocomplete", {
+      params: {
+        access_key: process.env.WEATHERSTACK_API_KEY,
+        query: city,
+      },
+    });
 
+    if (response.data.error) {
 
+      console.error("WeatherStack API error:", response.data.error);
+      return res.status(500).json({ error: response.data.error.info });
 
-
-
-
-// Route POST pour récupérer des données depuis la BDD sans filtre
-app.post("/alldata", (req, res) => {
-
-  // Requête SQL pour récupérer toutes les données
-  const query = 'SELECT * FROM api_weather_data';
-
-  connection.execute(query, (err, results) => {
-    if (err) {
-      console.error("Erreur lors de la récupération des données depuis la base de données :", err);
-      return res.status(500).json({ error: "Erreur lors de la récupération des données." });
     }
 
-    // Envoyer les résultats au front-end
-    res.json({
-      message: "Données récupérées avec succès.",
-      data: results  // `results` contient toutes les données récupérées de la base de données
-    });
-  });
-});
+    console.log("Autocomplete suggestions received:", response.data.location);
+    res.json({ data: response.data.location || [] });
+
+  } catch (error) {
+
+    console.error("Error fetching autocomplete data:", error.message);
+    res.status(500).json({ error: "Failed to fetch autocomplete data." });
+
+  }
 
 
 
+})
+
+
+
+/* AUTOCOMPLETE END */
 
 
 
 // Lancer le serveur
 app.listen(port, () => {
-  console.log(`Serveur en écoute sur http://localhost:${port}`);
+  console.log(`Server listening on http://localhost:${port}`);
 });
