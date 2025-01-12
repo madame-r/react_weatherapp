@@ -1,6 +1,7 @@
-// src/components/CityInput/CityInput.js
+
 import React from "react";
 import { useWeatherContext } from "../../contexts/WeatherContext";
+
 
 const CityInput = () => {
   const { city, suggestions, handleCityInputChange, handleSuggestionSelect, fetchWeatherData } = useWeatherContext();

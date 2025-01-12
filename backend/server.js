@@ -31,11 +31,6 @@ connection.connect((err) => {
   console.log("Connected to MySQL database.");
 });
 
-
-
-
-
-
 // Fonction pour sauvegarder les données dans un fichier JSON
 const saveDataToFile = (filePath, newData) => {
   let existingData = [];
@@ -62,14 +57,10 @@ const saveDataToFile = (filePath, newData) => {
   }
 };
 
-
-
-
-
 // Fonction pour enregistrer les données dans MySQL
-const saveDataToDatabase = (weatherstackData) => {
+const saveDataToDatabase = (weatherData) => {
   return new Promise((resolve, reject) => {
-    const { name, country, localtime, temperature, weather_descriptions, weather_icons } = weatherstackData;
+    const { name, country, local_time, temperature, weather_descriptions, weather_icon } = weatherData;
 
     const query = `
       INSERT INTO weather_data (name, country, local_time, temperature, weather_descriptions, weather_icon)
@@ -79,10 +70,10 @@ const saveDataToDatabase = (weatherstackData) => {
     const values = [
       name,
       country,
-      localtime,
+      local_time,
       temperature,
       weather_descriptions.join(", "),
-      weather_icons[0], // Première icône seulement
+      weather_icon[0], // Première icône seulement
     ];
 
     connection.execute(query, values, (err, results) => {
@@ -97,12 +88,16 @@ const saveDataToDatabase = (weatherstackData) => {
   });
 };
 
+// Fonction pour calculer l'heure locale d'une ville
+const calculateLocalTime = (timezone) => {
+  const utcDate = new Date();
+  const timezoneOffset = timezone * 1000; // timezone est en secondes, il faut le convertir en millisecondes
+  const localDate = new Date(utcDate.getTime() + timezoneOffset);
+  return localDate.toISOString();
+};
 
-
-
-
-/* WEATHER STACK START */
-app.get("/weatherstack", async (req, res) => {
+// Route "/weather"
+app.get("/weather", async (req, res) => {
   const city = req.query.city;
 
   if (!city) {
@@ -110,104 +105,79 @@ app.get("/weatherstack", async (req, res) => {
   }
 
   try {
-    const response = await axios.get('http://api.weatherstack.com/current', {
+    const response = await axios.get("http://api.openweathermap.org/data/2.5/weather", {
       params: {
-        access_key: process.env.WEATHERSTACK_API_KEY,
-        query: city
-      },
+        q: city,
+        appid: process.env.OPENWEATHERMAP_API_KEY,
+        units: "metric",
+      }
     });
 
-    if (response.data.error) {
-      return res.status(400).json({ error: "Impossible to fetch weather data from this city." });
+    if (response.data) {
+      const { name, sys, main, weather, timezone } = response.data;
+
+      const local_time = calculateLocalTime(timezone);
+
+      const weatherData = {
+        name,
+        country: sys.country,
+        local_time,
+        temperature: main.temp,
+        weather_descriptions: weather.map(w => w.description),
+        weather_icon: weather.map(w => `https://openweathermap.org/img/wn/${w.icon}.png`),
+        timestamp: new Date().toISOString(),
+      };
+
+      // Sauvegarder dans le fichier JSON et la base de données
+      saveDataToFile("./backend/weatherData.json", weatherData);
+
+      await saveDataToDatabase(weatherData);
+      res.json({ message: "Weather data saved.", data: weatherData });
+
+    } else {
+      return res.status(400).json({ error: "City not found." });
     }
-
-    const { location, current } = response.data;
-
-    if (!location || !current) {
-      return res.status(400).json({ error: "Invalid response from Weatherstack API." });
-    }
-
-    const weatherstackData = {
-      name: location.name,
-      country: location.country,
-      localtime: location.localtime,
-      temperature: current.temperature,
-      weather_descriptions: current.weather_descriptions,
-      weather_icons: current.weather_icons,
-      timestamp: new Date().toISOString() // Le timestamp est ici
-    };
-
-    // Sauvegarder dans le fichier JSON et la base de données
-    saveDataToFile("./backend/weatherstackData.json", weatherstackData);
-
-    // Sauvegarder dans la base de données
-    saveDataToDatabase(weatherstackData)
-      .then(() => {
-        res.json({ message: "Weather data saved.", data: weatherstackData });
-      })
-      .catch((error) => {
-        res.status(500).json({ error: "Error saving to database." });
-      });
-
   } catch (error) {
     console.error("Error fetching weather data:", error.message);
-    res.status(500).json({ error: "Unable to connect to the Weatherstack API. Please try again later." });
+    res.status(500).json({ error: "Unable to fetch weather data from OpenWeatherMap." });
   }
 });
 
-/* WEATHER STACK END */
-
-
-
-/* AUTOCOMPLETE START */
-
-app.get("/weatherstack/autocomplete", async (req, res) => {
-
+// Route "/autocomplete"
+app.get("/autocomplete", async (req, res) => {
   const city = req.query.city;
 
   if (!city) {
-
     return res.status(400).json({ error: "Please enter a city name" });
-
   }
 
   try {
-
-    console.log("Received autocomplete request for city:", city);
-
-    const response = await axios.get("http://api.weatherstack.com/autocomplete", {
+    const response = await axios.get("https://api.openweathermap.org/data/2.5/find", {
       params: {
-        access_key: process.env.WEATHERSTACK_API_KEY,
-        query: city,
+        q: city,
+        appid: process.env.OPENWEATHERMAP_API_KEY,
+        type: 'like',
+        count: 5,
+        units: 'metric',
       },
     });
 
-    if (response.data.error) {
-
-      console.error("WeatherStack API error:", response.data.error);
-      return res.status(500).json({ error: response.data.error.info });
-
+    if (!response.data.list) {
+      return res.status(500).json({ error: "Error fetching autocomplete data." });
     }
 
-    console.log("Autocomplete suggestions received:", response.data.location);
-    res.json({ data: response.data.location || [] });
+    const cities = response.data.list.map(item => ({
+      name: item.name,
+      country: item.sys.country,
+      id: item.id,
+    }));
 
+    res.json({ data: cities });
   } catch (error) {
-
     console.error("Error fetching autocomplete data:", error.message);
     res.status(500).json({ error: "Failed to fetch autocomplete data." });
-
   }
-
-
-
-})
-
-
-
-/* AUTOCOMPLETE END */
-
-
+});
 
 // Lancer le serveur
 app.listen(port, () => {

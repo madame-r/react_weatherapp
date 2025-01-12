@@ -1,5 +1,0 @@
-
-https://weatherstack.com/
-
-
-API KEY : 744a9abaafc0a553cab1f1ac69610186

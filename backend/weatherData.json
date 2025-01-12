@@ -1,0 +1,80 @@
+[
+  {
+    "name": "Delhi",
+    "country": "IN",
+    "local_time": "2025-01-12T20:39:04.419Z",
+    "temperature": 13.05,
+    "weather_descriptions": [
+      "mist"
+    ],
+    "weather_icon": [
+      "https://openweathermap.org/img/wn/50n.png"
+    ],
+    "timestamp": "2025-01-12T15:09:04.463Z"
+  },
+  {
+    "name": "Delhi",
+    "country": "IN",
+    "local_time": "2025-01-12T20:39:10.907Z",
+    "temperature": 13.05,
+    "weather_descriptions": [
+      "mist"
+    ],
+    "weather_icon": [
+      "https://openweathermap.org/img/wn/50n.png"
+    ],
+    "timestamp": "2025-01-12T15:09:10.907Z"
+  },
+  {
+    "name": "Delhi",
+    "country": "IN",
+    "local_time": "2025-01-12T20:39:38.694Z",
+    "temperature": 13.05,
+    "weather_descriptions": [
+      "mist"
+    ],
+    "weather_icon": [
+      "https://openweathermap.org/img/wn/50n.png"
+    ],
+    "timestamp": "2025-01-12T15:09:38.694Z"
+  },
+  {
+    "name": "Delhi",
+    "country": "IN",
+    "local_time": "2025-01-12T20:55:27.419Z",
+    "temperature": 13.05,
+    "weather_descriptions": [
+      "mist"
+    ],
+    "weather_icon": [
+      "https://openweathermap.org/img/wn/50n.png"
+    ],
+    "timestamp": "2025-01-12T15:25:27.434Z"
+  },
+  {
+    "name": "Delhi",
+    "country": "IN",
+    "local_time": "2025-01-12T20:55:32.800Z",
+    "temperature": 13.05,
+    "weather_descriptions": [
+      "mist"
+    ],
+    "weather_icon": [
+      "https://openweathermap.org/img/wn/50n.png"
+    ],
+    "timestamp": "2025-01-12T15:25:32.801Z"
+  },
+  {
+    "name": "Delhi",
+    "country": "IN",
+    "local_time": "2025-01-12T20:57:13.346Z",
+    "temperature": 13.05,
+    "weather_descriptions": [
+      "mist"
+    ],
+    "weather_icon": [
+      "https://openweathermap.org/img/wn/50n.png"
+    ],
+    "timestamp": "2025-01-12T15:27:13.346Z"
+  }
+]

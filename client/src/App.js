@@ -12,15 +12,15 @@ import CityInput from "./components/CityInput/CityInput";
 function App() {
 
   return (
+    <Router>
 
-    <WeatherProvider>
+      <WeatherProvider>
 
-      <Router>
 
         <div className="app">
-          
+
           <Routes>
-            
+
             <Route path="/" element={<CityInput />} />
 
             <Route path="/results" element={<WeatherCard />} />
@@ -29,9 +29,9 @@ function App() {
 
         </div>
 
-      </Router>
 
-    </WeatherProvider>
+      </WeatherProvider>
+    </Router>
   );
 }
 
