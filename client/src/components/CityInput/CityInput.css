@@ -1,0 +1,54 @@
+.city-input-card {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 90vw;
+    justify-self: center;
+}
+
+.city-input-card h1 {
+    color: white;
+    text-align: center;
+}
+
+
+.city-form {
+    width: 100%;
+    display: flex;
+}
+
+
+.city-input,
+.city-button {
+    height: 5vh;
+    border: 0;
+    background-color: rgb(255, 255, 255, 0.8);
+}
+
+.city-input {
+    width: 86%;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    padding: 20px;
+    font-size: 17px;
+}
+
+.city-button {
+    width: 15%;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.bi-search {
+    color: grey;
+    font-size: 20px;
+    background-color: transparent;
+}
+
+.ul-suggestions {
+    background-color: aquamarine;
+    width: 100%;
+    margin-top: 5px;
+}

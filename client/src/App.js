@@ -5,6 +5,7 @@ import { WeatherProvider } from "./contexts/WeatherContext";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import WeatherCard from "./components/WeatherCard/WeatherCard";
 import CityInput from "./components/CityInput/CityInput";
+import './App.css';
 
 
 
