@@ -1,0 +1,11 @@
+.back-home a {
+    color: white;
+}
+
+.temperature-weather-icon {
+    display: flex;
+}
+
+.temperature {
+    font-size: 70px;
+}

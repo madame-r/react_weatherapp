@@ -76,5 +76,31 @@
       "https://openweathermap.org/img/wn/50n.png"
     ],
     "timestamp": "2025-01-12T15:27:13.346Z"
+  },
+  {
+    "name": "Rome",
+    "country": "US",
+    "local_time": "2025-01-13T03:23:56.068Z",
+    "temperature": 0.49,
+    "weather_descriptions": [
+      "few clouds"
+    ],
+    "weather_icon": [
+      "https://openweathermap.org/img/wn/02n.png"
+    ],
+    "timestamp": "2025-01-13T08:23:56.068Z"
+  },
+  {
+    "name": "Rome",
+    "country": "US",
+    "local_time": "2025-01-13T09:02:50.927Z",
+    "temperature": 1.27,
+    "weather_descriptions": [
+      "clear sky"
+    ],
+    "weather_icon": [
+      "https://openweathermap.org/img/wn/01d.png"
+    ],
+    "timestamp": "2025-01-13T14:02:50.927Z"
   }
 ]

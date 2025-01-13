@@ -1,7 +1,7 @@
 import React from 'react';
 import { useWeatherContext } from "../../contexts/WeatherContext";
 import { Link } from 'react-router-dom';
-
+import './WeatherCard.css'
 
 
 
@@ -36,22 +36,32 @@ const WeatherCard = () => {
 
 
 
-            <div><Link to="/">Back to Home</Link></div>
+            <div className='back-home'><Link to="/">Back to Home</Link></div>
 
 
 
             <div>
                 <h2>{weatherData?.name || "Unknown location"} ({weatherData?.country || "Unknown country"})</h2>
+
                 <p>Local Time: {weatherData?.local_time || "Unknown time"}</p>
-                <p>Temperature: {weatherData?.temperature || "--"} °C</p>
-                <p>Description: {weatherData?.weather_descriptions || "No description available"}</p>
-                <div>
-                    {weatherData.weather_icon ? (
-                        <img src={weatherData.weather_icon} alt="weather icon" />
-                    ) : (
-                        <p>No weather icon available</p>
-                    )}
+
+                <div className='temperature-weather-icon'>
+                    <p className='temperature'>{weatherData?.temperature || "--"} °C</p>
+
+                    <div>
+                        {weatherData.weather_icon ? (
+                            <img src={weatherData.weather_icon} alt="weather icon" />
+                        ) : (
+                            <p>No weather icon available</p>
+                        )}
+                    </div>
+
                 </div>
+
+
+
+                <p>Description: {weatherData?.weather_descriptions || "No description available"}</p>
+
             </div>
         </div>
 
