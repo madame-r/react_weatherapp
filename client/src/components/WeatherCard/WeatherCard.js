@@ -8,7 +8,7 @@ import './WeatherCard.css'
 
 const WeatherCard = () => {
 
-    const { loading, error, weatherData } = useWeatherContext();
+    const { loading, error, weatherData, formatLocalTime } = useWeatherContext();
 
 
 
@@ -40,15 +40,15 @@ const WeatherCard = () => {
 
 
 
-            <div>
+            <div className='weather-card'>
                 <h2>{weatherData?.name || "Unknown location"} ({weatherData?.country || "Unknown country"})</h2>
 
-                <p>Local Time: {weatherData?.local_time || "Unknown time"}</p>
+                <p>{weatherData?.local_time ? formatLocalTime(weatherData.local_time) : "Unknown time"}</p>
 
                 <div className='temperature-weather-icon'>
-                    <p className='temperature'>{weatherData?.temperature || "--"} °C</p>
+                <p className='temperature'>{weatherData?.temperature ? Math.round(weatherData.temperature) : "--"} °C</p>
 
-                    <div>
+                    <div className='weather-icon'>
                         {weatherData.weather_icon ? (
                             <img src={weatherData.weather_icon} alt="weather icon" />
                         ) : (
@@ -60,7 +60,7 @@ const WeatherCard = () => {
 
 
 
-                <p>Description: {weatherData?.weather_descriptions || "No description available"}</p>
+                <p>{weatherData?.weather_descriptions || "No description available"}</p>
 
             </div>
         </div>

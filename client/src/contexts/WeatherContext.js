@@ -23,7 +23,13 @@ export const WeatherProvider = ({ children }) => {
   const navigate = useNavigate();
 
 
-
+ // Fonction pour formater l'heure locale
+ const formatLocalTime = (isoString) => {
+  const date = new Date(isoString);
+  const hours = date.getUTCHours();
+  const minutes = date.getUTCMinutes();
+  return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+};
 
   // Fonction pour récupérer les données météo
   const fetchWeatherData = async (city) => {
@@ -83,6 +89,7 @@ export const WeatherProvider = ({ children }) => {
         suggestions,
         handleCityInputChange,
         handleSuggestionSelect,
+        formatLocalTime,
       }}
     >
       {children}

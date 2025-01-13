@@ -1,11 +1,39 @@
 .back-home a {
     color: white;
+    text-decoration: none;
 }
+
+
+.main-results {
+    width: 80vw;
+}
+
+.weather-card {
+    margin-top: 40px;
+    background-color: rgb(0, 0, 0, 0.3);
+    color: white;
+    border-radius: 20px;
+    padding: 20px;
+}
+
 
 .temperature-weather-icon {
     display: flex;
 }
 
 .temperature {
+    width: 70%;
     font-size: 70px;
+
+}
+
+.weather-icon {
+    width: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.weather-icon img {
+    width: 80%;
 }
