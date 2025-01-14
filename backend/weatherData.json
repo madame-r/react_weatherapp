@@ -208,5 +208,44 @@
       "https://openweathermap.org/img/wn/02n.png"
     ],
     "timestamp": "2025-01-13T19:50:19.704Z"
+  },
+  {
+    "name": "Singapore",
+    "country": "SG",
+    "local_time": "2025-01-15T03:36:16.147Z",
+    "temperature": 24.61,
+    "weather_descriptions": [
+      "broken clouds"
+    ],
+    "weather_icon": [
+      "https://openweathermap.org/img/wn/04n.png"
+    ],
+    "timestamp": "2025-01-14T19:36:16.148Z"
+  },
+  {
+    "name": "Singapore",
+    "country": "SG",
+    "local_time": "2025-01-15T03:36:18.752Z",
+    "temperature": 24.61,
+    "weather_descriptions": [
+      "broken clouds"
+    ],
+    "weather_icon": [
+      "https://openweathermap.org/img/wn/04n.png"
+    ],
+    "timestamp": "2025-01-14T19:36:18.752Z"
+  },
+  {
+    "name": "Goa",
+    "country": "IN",
+    "local_time": "2025-01-15T01:12:31.031Z",
+    "temperature": 25.21,
+    "weather_descriptions": [
+      "overcast clouds"
+    ],
+    "weather_icon": [
+      "https://openweathermap.org/img/wn/04n.png"
+    ],
+    "timestamp": "2025-01-14T19:42:31.032Z"
   }
 ]
