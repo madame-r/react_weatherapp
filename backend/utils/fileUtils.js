@@ -1,5 +1,4 @@
 const fs = require('fs');
-const mysql2 = require('mysql2');
 const connection = require('../config/database'); // On récupère la connexion MySQL
 
 

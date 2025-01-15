@@ -19,6 +19,8 @@ const connection = require('./config/database');
 
 const weatherRoutes = require('./routes/weatherRoutes'); 
 const autocompleteRoutes = require('./routes/autocompleteRoutes'); 
+const userRoutes = require('./routes/userRoutes'); 
+
 
 
 const { saveDataToFile, saveDataToDatabase } = require('./utils/fileUtils');
@@ -30,6 +32,7 @@ const { calculateLocalTime } = require('./utils/timeUtils');
 
 app.use('/weather', weatherRoutes);
 app.use('/autocomplete', autocompleteRoutes);
+app.use('/api/users', userRoutes); 
 
 
 
