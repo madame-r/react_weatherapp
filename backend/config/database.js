@@ -9,6 +9,7 @@ const connection = mysql2.createConnection({
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
   port: process.env.DB_PORT,
+  connectTimeout: 20000, // à utiliser dans le cas d'une connexion ou d'un ordinateur lent
 });
 
 // Vérification de la connexion

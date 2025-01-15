@@ -1,11 +1,14 @@
 //rfce
 
 import React from 'react';
-import { WeatherProvider } from "./contexts/WeatherContext";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { UserProvider } from './contexts/UserContext';
+import { WeatherProvider } from "./contexts/WeatherContext";
 import WeatherCard from "./components/WeatherCard/WeatherCard";
 import CityInput from "./components/CityInput/CityInput";
+import RegisterForm from "./components/RegisterForm/RegisterForm";
 import './App.css';
+
 
 
 
@@ -15,23 +18,34 @@ function App() {
   return (
     <Router>
 
-      <WeatherProvider>
+      <UserProvider>
 
 
-        <div className="app">
 
-          <Routes>
-
-            <Route path="/" element={<CityInput />} />
-
-            <Route path="/results" element={<WeatherCard />} />
-
-          </Routes>
-
-        </div>
+        <WeatherProvider>
 
 
-      </WeatherProvider>
+          <div className="app">
+
+            <Routes>
+
+              <Route path="/" element={<CityInput />} />
+              <Route path="/results" element={<WeatherCard />} />
+
+              <Route path="/register" element={<RegisterForm />} />
+              {/* <Route path="/login" element={<LoginForm />} />  */}
+
+            </Routes>
+
+          </div>
+
+
+        </WeatherProvider>
+
+
+      </UserProvider>
+
+
     </Router>
   );
 }

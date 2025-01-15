@@ -32,7 +32,7 @@ const { calculateLocalTime } = require('./utils/timeUtils');
 
 app.use('/weather', weatherRoutes);
 app.use('/autocomplete', autocompleteRoutes);
-app.use('/api/users', userRoutes); 
+app.use('/users', userRoutes); 
 
 
 
