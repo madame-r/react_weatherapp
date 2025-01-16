@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 
 // Contrôleur pour l'inscription
 const registerUser = async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, name } = req.body;
 
 
     try {
@@ -19,7 +19,7 @@ const registerUser = async (req, res) => {
 
 
         // Créer l'utilisateur
-        await createUser(email, password);
+        await createUser(email, password,name);
         res.status(201).json({ message: 'User created successfully' });
 
 

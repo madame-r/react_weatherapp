@@ -8,7 +8,12 @@ const router = express.Router();
 
 
 // Route d'inscription
-router.post('/register', registerUser);
+// router.post('/register', registerUser);
+
+router.post('/register', (req, res, next) => {
+    console.log('Received registration request:', req.body); // Log de la requête
+    next(); // Passe au contrôleur
+}, registerUser);
 
 
 
