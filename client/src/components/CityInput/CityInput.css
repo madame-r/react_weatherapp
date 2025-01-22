@@ -71,3 +71,39 @@
     background-color: rgb(0, 0, 0, 0.2);
     cursor: pointer;
 }
+
+
+@media screen and (min-width:1024px) {
+    
+    .city-input-card {
+        width: 35vw;
+    }
+
+    .city-input-card h1 {
+        color: black;
+    }
+
+    .city-input,
+    .city-button {
+        height: 8vh;
+    }
+
+    .city-input {
+
+        border-top-left-radius: 30px;
+        border-bottom-left-radius: 30px;
+
+    }
+
+    .city-input::placeholder {
+        color: white;
+    }
+    
+    .city-button {
+ 
+        border-top-right-radius: 30px;
+        border-bottom-right-radius: 30px;
+    }
+
+
+  }
