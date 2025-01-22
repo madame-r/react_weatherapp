@@ -7,9 +7,8 @@ import { WeatherProvider } from "./contexts/WeatherContext";
 import WeatherCard from "./components/WeatherCard/WeatherCard";
 import CityInput from "./components/CityInput/CityInput";
 import RegisterForm from "./components/RegisterForm/RegisterForm";
+import LoginForm from "./components/LoginForm/LoginForm";
 import './App.css';
-
-
 
 
 
@@ -33,7 +32,7 @@ function App() {
               <Route path="/results" element={<WeatherCard />} />
 
               <Route path="/register" element={<RegisterForm />} />
-              {/* <Route path="/login" element={<LoginForm />} />  */}
+              <Route path="/login" element={<LoginForm />} />
 
             </Routes>
 

@@ -1,41 +1,28 @@
-
 const { createUser, findUserByEmail, verifyPassword } = require('../models/userModel');
 const jwt = require('jsonwebtoken');
-
 
 // Contrôleur pour l'inscription
 const registerUser = async (req, res) => {
     const { email, password, name } = req.body;
 
-
     try {
-
         // Vérifier si l'utilisateur existe déjà
         const user = await findUserByEmail(email);
 
         if (user) {
-            return res.status(400).json({ message: 'Already existing user' })
+            return res.status(400).json({ message: 'Already existing user' });
         }
 
-
         // Créer l'utilisateur
-        await createUser(email, password,name);
+        await createUser(email, password, name);
         res.status(201).json({ message: 'User created successfully' });
-
-
     } catch (error) {
-
-        console.error(error);
+        console.error('Error creating user:', error);
         res.status(500).json({ message: 'Error creating user' });
-
     }
 }
 
-
-
-
-
-
+// Contrôleur pour la connexion
 const loginUser = async (req, res) => {
     const { email, password } = req.body;
 
@@ -57,10 +44,9 @@ const loginUser = async (req, res) => {
 
         res.json({ message: 'Connection successful', token });
     } catch (error) {
-        console.error(error);
+        console.error('Error during login:', error);
         res.status(500).json({ message: 'Error connecting' });
     }
 };
-
 
 module.exports = { registerUser, loginUser };

@@ -1,10 +1,9 @@
 
+require('dotenv').config();
 
 const express = require('express');
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const fs = require("fs");
-const axios = require('axios');
 
 
 const app = express();
