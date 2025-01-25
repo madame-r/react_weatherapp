@@ -1,3 +1,35 @@
+
+/* FONT FACE ******************************************************* */
+
+
+@font-face {
+  font-family: "Montserrat";
+  src: url(./assets/font/Montserrat-Regular.ttf);
+}
+
+
+
+
+/*  RESET ******************************************************* */
+
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Montserrat";
+}
+
+
+img, svg, input, video {
+  width: 100%;
+  vertical-align: bottom;
+}
+
+
+/* BODY ******************************************************* */
+
+
 .app {
   height: 100vh;
   display: flex;

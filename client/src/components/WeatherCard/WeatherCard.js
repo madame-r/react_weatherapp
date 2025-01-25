@@ -1,6 +1,5 @@
 import React from 'react';
 import { useWeatherContext } from "../../contexts/WeatherContext";
-import { Link } from 'react-router-dom';
 import './WeatherCard.css'
 
 
@@ -32,11 +31,8 @@ const WeatherCard = () => {
 
     return (
 
-        <div className="main-results">
+        <main className="main-results">
 
-
-
-            <div className='back-home'><Link to="/">Back to Home</Link></div>
 
 
 
@@ -46,7 +42,9 @@ const WeatherCard = () => {
                 <p>{weatherData?.local_time ? formatLocalTime(weatherData.local_time) : "Unknown time"}</p>
 
                 <div className='temperature-weather-icon'>
-                <p className='temperature'>{weatherData?.temperature ? Math.round(weatherData.temperature) : "--"} °C</p>
+                    <p className='weather-temperature'>{weatherData?.temperature ? Math.round(weatherData.temperature) : "--"} °C</p>
+
+                    <p className='weather-description'>{weatherData?.weather_descriptions || "No description available"}</p>
 
                     <div className='weather-icon'>
                         {weatherData.weather_icon ? (
@@ -60,10 +58,10 @@ const WeatherCard = () => {
 
 
 
-                <p>{weatherData?.weather_descriptions || "No description available"}</p>
+
 
             </div>
-        </div>
+        </main>
 
     )
 }

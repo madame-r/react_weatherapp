@@ -88,6 +88,7 @@ export const WeatherProvider = ({ children }) => {
         city,
         setCity,
         suggestions,
+        setSuggestions, // Ajout de setSuggestions dans le contexte
         handleCityInputChange,
         handleSuggestionSelect,
         formatLocalTime,
