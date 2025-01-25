@@ -22,7 +22,7 @@ const userRoutes = require('./routes/userRoutes');
 
 
 
-const { saveDataToFile, saveDataToDatabase } = require('./utils/fileUtils');
+const { saveDataToDatabase } = require('./utils/fileUtils');
 const { calculateLocalTime } = require('./utils/timeUtils');
 
 

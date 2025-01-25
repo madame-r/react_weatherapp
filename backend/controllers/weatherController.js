@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { saveDataToFile, saveDataToDatabase } = require('../utils/fileUtils');
+const { saveWeatherDataToDatabase } = require('../models/weatherModel');
 const { calculateLocalTime } = require('../utils/timeUtils');
 
 // Contrôleur pour récupérer et traiter les données météo
@@ -17,7 +17,6 @@ const getWeather = async (city) => {
   });
 
   const { name, sys, main, weather, timezone } = response.data;
-
   const local_time = calculateLocalTime(timezone);
 
   const weatherData = {
@@ -30,9 +29,8 @@ const getWeather = async (city) => {
     timestamp: new Date().toISOString(),
   };
 
-  // Sauvegarder dans le fichier et la base de données
-  saveDataToFile("./backend/weatherData.json", weatherData);
-  await saveDataToDatabase(weatherData);
+  // Sauvegarder dans la base de données
+  await saveWeatherDataToDatabase(weatherData);
 
   return weatherData;
 };
