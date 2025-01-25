@@ -2,10 +2,6 @@ import React, { createContext, useContext, useState } from "react";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 
-
-
-
-
 const WeatherContext = createContext();
 
 export const useWeatherContext = () => {
@@ -22,14 +18,13 @@ export const WeatherProvider = ({ children }) => {
 
   const navigate = useNavigate();
 
-
- // Fonction pour formater l'heure locale
- const formatLocalTime = (isoString) => {
-  const date = new Date(isoString);
-  const hours = date.getUTCHours();
-  const minutes = date.getUTCMinutes();
-  return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-};
+  // Fonction pour formater l'heure locale
+  const formatLocalTime = (isoString) => {
+    const date = new Date(isoString);
+    const hours = date.getUTCHours();
+    const minutes = date.getUTCMinutes();
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+  };
 
   // Fonction pour récupérer les données météo
   const fetchWeatherData = async (city) => {
@@ -37,13 +32,9 @@ export const WeatherProvider = ({ children }) => {
     setError(null);
 
     try {
-      
       const response = await axios.get(`http://localhost:4000/weather?city=${city}`);
-
       setWeatherData(response.data.data); 
-
       navigate('/results');
-
     } catch (error) {
       console.error("Error fetching weather data:", error);
       setError("Unable to fetch weather data.");
@@ -55,12 +46,12 @@ export const WeatherProvider = ({ children }) => {
   // Fonction pour gérer l'entrée de la ville et récupérer les suggestions
   const handleCityInputChange = async (value) => {
     setCity(value);
-  
+
     if (value.length >= 3) {
       try {
         const response = await axios.get(`http://localhost:4000/autocomplete?city=${value}`);
         console.log('Autocomplete suggestions:', response.data);  // Log des suggestions retournées
-  
+
         // Vérifie si des résultats ont été retournés
         if (response.data.data && response.data.data.length > 0) {
           setSuggestions(response.data.data);
@@ -79,8 +70,7 @@ export const WeatherProvider = ({ children }) => {
       setError(null); // Réinitialise l'erreur si la longueur de la ville est inférieure à 3
     }
   };
-  
-  
+
   // Fonction pour sélectionner une suggestion de ville et récupérer ses données météo
   const handleSuggestionSelect = (suggestion) => {
     setCity(suggestion.name);
