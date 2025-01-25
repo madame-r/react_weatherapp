@@ -1,16 +1,13 @@
-.main-register {
+.main-login {
     width: 80vw;
 }
 
-.main-register h2 {
-    text-align: center;
-    margin-bottom: 20px;
+.main-login h2 {
     color: white;
+    margin-bottom: 20px;
 }
 
-#name,
-#email,
-#password {
+.input-login {
     height: 5vh;
     width: 100%;
     border: 0;
@@ -20,11 +17,7 @@
     padding-left: 20px;
 }
 
-form input::placeholder {
-    color: white;
-}
-
-.button-signup {
+.button-login {
     padding: 10px 20px;
     border: 0;
     background-color: #017CCC;
@@ -32,8 +25,24 @@ form input::placeholder {
     border-radius: 20px;
 }
 
-.button-signup:hover {
+.button-login:hover {
     cursor: pointer;
     background-color: white;
     color: #017CCC;
 }
+
+
+@media screen and (min-width:1024px) {
+    
+    .main-login  {
+        margin-top: 80px;
+        width: 40vw;
+    }
+
+    .main-login h2 {
+        color: black;
+    }
+
+}
+
+

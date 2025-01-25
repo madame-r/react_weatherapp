@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../contexts/UserContext";
+import './LoginForm.css';
 
 const LoginForm = () => {
 
@@ -28,30 +29,34 @@ const LoginForm = () => {
 
 
     return (
-        <div className="login-container">
-            <h2>Login</h2>
+        <main className="main-login">
+            <h2>Login to your account</h2>
             <form onSubmit={handleSubmit}>
                 <div>
-                    <label>Email:</label>
+                    
                     <input
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
+                        placeholder='Email'
+                        className="input-login"
                     />
                 </div>
                 <div>
-                    <label>Password:</label>
+                    
                     <input
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
+                        placeholder='Password'
+                        className="input-login"
                     />
                 </div>
-                <button type="submit">Login</button>
+                <button type="submit" className="button-login">Send</button>
             </form>
-        </div>
+        </main>
     );
 
 };

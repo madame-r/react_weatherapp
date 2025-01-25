@@ -3,10 +3,10 @@
     
     .main-register {
         margin-top: 80px;
+        width: 40vw;
     }
 
-    .button-signup
-     {
-        border: 0;
+    .main-register h2 {
+        color: black;
     }
 }

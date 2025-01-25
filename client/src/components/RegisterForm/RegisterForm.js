@@ -47,8 +47,8 @@ const RegisterForm = () => {
 
 
     return (
-        <div className='main-register'>
-            <h2>Your favorite cities in one place !</h2>
+        <main className='main-register'>
+            <h2>Keep your favorite cities !</h2>
             <form onSubmit={handleRegister}>
 
             <div>
@@ -89,7 +89,7 @@ const RegisterForm = () => {
                 <button type="submit" className='button-signup'>Sign Up</button>
             </form>
             {message && <p>{message}</p>}
-        </div>
+        </main>
     );
 }
 

@@ -77,6 +77,7 @@
     
     .city-input-card {
         width: 35vw;
+        margin-top: 80px;
     }
 
     .city-input-card h1 {
@@ -85,7 +86,7 @@
 
     .city-input,
     .city-button {
-        height: 8vh;
+        height: 6vh;
     }
 
     .city-input {
