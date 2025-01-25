@@ -1,0 +1,12 @@
+
+@media screen and (min-width:1024px) {
+    
+    .main-register {
+        margin-top: 80px;
+    }
+
+    .button-signup
+     {
+        border: 0;
+    }
+}

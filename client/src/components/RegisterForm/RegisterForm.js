@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import './RegisterForm.css';
+import './RegisterFormMq.css';
 
 
 
@@ -45,8 +47,8 @@ const RegisterForm = () => {
 
 
     return (
-        <div>
-            <h2>Inscription</h2>
+        <div className='main-register'>
+            <h2>Your favorite cities in one place !</h2>
             <form onSubmit={handleRegister}>
 
             <div>
@@ -84,7 +86,7 @@ const RegisterForm = () => {
                 </div>
                 
 
-                <button type="submit">Register</button>
+                <button type="submit" className='button-signup'>Sign Up</button>
             </form>
             {message && <p>{message}</p>}
         </div>
