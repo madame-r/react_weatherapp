@@ -4,12 +4,6 @@
   flex-direction: column;
   align-items: center;
   background-image: url('./assets/img/app_img_background.jpg');
-  padding-top: 40px;
+ 
 }
 
-@media screen and (min-width:1024px) {
-    
-  .app {
-    justify-content: center;
-  }
-}

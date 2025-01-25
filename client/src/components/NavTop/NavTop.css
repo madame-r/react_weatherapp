@@ -1,0 +1,57 @@
+nav {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    margin-bottom: 40px;
+}
+
+
+.nav-home a {
+    display: flex;
+    width: 20vw;
+}
+
+.nav-home-icon i {
+    color: white;
+    font-size: 30px;
+    margin-right: 10px;
+}
+
+.nav-home p {
+display: none;
+}
+
+
+.nav-list {
+    list-style-type: none;
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+
+
+.nav-button-signup {
+    padding: 10px 20px;
+    border: 0;
+    background-color: white;
+    color: #017CCC;
+    border-radius: 20px;
+}
+
+.nav-button-signup:hover {
+    cursor: pointer;
+    border: 1px solid white;
+    background-color: transparent;
+    color: white;
+}
+
+
+.nav-item i {
+    color: white;
+    font-size: 35px;
+    margin-left: 10px;
+}
