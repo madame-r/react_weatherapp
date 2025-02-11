@@ -1,58 +1,46 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useUser } from '../../contexts/UserContext';  // Assurez-vous d'importer le UserContext correctement
+import axiosInstance from '../../config/axiosConfig';  // Utilisez axiosInstance pour bénéficier de la configuration partagée
 import './RegisterForm.css';
 import './RegisterFormMq.css';
 
-
-
 const RegisterForm = () => {
-
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [name,setName] = useState('');
-    const [message, setMessage] = useState('');
+    const [name, setName] = useState('');
+    const { loginUser } = useUser();  // On récupère la fonction loginUser depuis le UserContext
+    const navigate = useNavigate();
 
     const handleRegister = async (e) => {
-
-        console.log(e);
-
         e.preventDefault();
 
-        // console.log('Form data:', { email, password, name });
-
         try {
-
-            const response = await axios.post('http://localhost:4000/users/register', {
+            // Appel à l'API d'enregistrement pour créer l'utilisateur
+            const response = await axiosInstance.post('/users/register', {
                 email,
                 password,
                 name
             });
 
-            if (response.data) {
-                setMessage('Registration successful!');
-            }
+            // Vérifier si l'inscription a été réussie
+            if (response.data && response.data.message === 'User created successfully') {
+                // Connexion automatique après inscription
+                await loginUser(email, password);  // Connexion de l'utilisateur juste après l'inscription
 
+                // Redirection vers la page d'accueil
+                navigate('/');  // Changer la route selon tes besoins
+            }
         } catch (error) {
             console.error('Error during registration:', error);
-            setMessage('Error during registration. Please try again.');
-
         }
-
-
-    }
-
-
-
-
-
+    };
 
     return (
         <main className='main-register'>
-            <h2>Keep your favorite cities !</h2>
+            <h2>Keep your favorite cities!</h2>
             <form onSubmit={handleRegister}>
-
-            <div>
-                    
+                <div>
                     <input
                         type="text"
                         id="name"
@@ -63,36 +51,29 @@ const RegisterForm = () => {
                     />
                 </div>
                 <div>
-                    
                     <input
                         type="email"
                         id="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
-                         placeholder='E-mail'
+                        placeholder='E-mail'
                     />
                 </div>
                 <div>
-                   
                     <input
                         type="password"
                         id="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
-                         placeholder='Password'
+                        placeholder='Password'
                     />
                 </div>
-                
-
                 <button type="submit" className='button-signup'>Sign Up</button>
             </form>
-            {message && <p>{message}</p>}
         </main>
     );
 }
-
-
 
 export default RegisterForm;

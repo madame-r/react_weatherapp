@@ -41,8 +41,44 @@ const verifyPassword = (password, hashedPassword) => {
     return bcrypt.compare(password, hashedPassword);
   };
   
+  
+
+
+// Fonction pour trouver un utilisateur par ID
+const findUserById = (id) => {
+  return new Promise((resolve, reject) => {
+    console.log("ID utilisateur extrait du token :", id);
+
+    // Requête SQL pour récupérer l'utilisateur
+    connection.query('SELECT * FROM users WHERE id = ?', [id], (err, rows) => {
+      if (err) {
+        console.error("Erreur dans la requête :", err);
+        reject(err); // Rejette la promesse en cas d'erreur
+      }
+
+      console.log('Résultat de la requête:', rows);
+
+      // Si un utilisateur est trouvé, on le retourne
+      if (rows.length > 0) {
+        console.log('Utilisateur trouvé:', rows[0]);
+        resolve(rows[0]); // Résoudre la promesse avec l'utilisateur trouvé
+      } else {
+        console.log('Aucun utilisateur trouvé');
+        resolve(null); // Résoudre la promesse avec null si aucun utilisateur trouvé
+      }
+    });
+  });
+};
+
+
+
+
+  
+
+
   module.exports = {
     createUser,
     findUserByEmail,
     verifyPassword,
+    findUserById
   };
